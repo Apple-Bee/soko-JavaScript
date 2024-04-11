@@ -33,11 +33,11 @@ function render() {
     let table = document.getElementById("sokoban");
     table.innerHTML = '';
 
-    for (let y = 0; y < sokoban.length; y++) {
-        let row = table.insertRow();
-        for (let x = 0; x < sokoban[y].length; x++) {
-            let cell = row.insertCell();
-            cell.classList.add(sokoban[y][x]);
+    sokoban.map((row, y) => {
+        let newRow = table.insertRow();
+        row.map((cellContent, x) => {
+            let cell = newRow.insertCell();
+            cell.classList.add(cellContent);
             if (x === playerPos.x && y === playerPos.y) {
                 cell.textContent = 'P';
             } else if (boxPos.some(pos => pos.x === x && pos.y === y)) {
@@ -54,11 +54,11 @@ function render() {
             } else if (cell.textContent === 'B') {
                 cell.classList.add('box');
                 cell.style.backgroundColor = 'brown';
-            } else if (sokoban[y][x] === 'wall') {
+            } else if (cellContent === 'wall') {
                 cell.style.backgroundColor = 'gray';
             }
-        }
-    }
+        });
+    });
 
     let targetsRemaining = targetStates.flat().some(state => state);
 
@@ -68,6 +68,7 @@ function render() {
         document.body.appendChild(message);
     }
 }
+
 
 // Function to move the player
 function move(dx, dy) {
